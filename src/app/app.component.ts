@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'custom-form';
+  public result = {};
+  public reactiveForm: FormGroup;
+
+  constructor(private fb: FormBuilder) {
+    this.result = {hello: 'world'};
+
+    this.reactiveForm = this.fb.group({
+      result: ['', Validators.required]
+    });
+  }
 }
