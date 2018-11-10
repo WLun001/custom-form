@@ -1,4 +1,4 @@
-import {Component, forwardRef, Input} from '@angular/core';
+import {Component, forwardRef} from '@angular/core';
 import {ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator} from '@angular/forms';
 
 @Component({
@@ -21,6 +21,11 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
   private jsonString: string;
   private parseError: boolean;
   private data: any;
+  // the method set in registerOnChange to emit changes back to the form
+  private propagateChange = (_: any) => {
+  };
+
+  // registers 'fn' that will be fired wheb changes are made
 
   // this is the initial value set to the component
   public writeValue(obj: any) {
@@ -31,13 +36,13 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
     }
   }
 
-  // registers 'fn' that will be fired wheb changes are made
+  // validates the form, returns null when valid else the validation object
+
   // this is how we emit the changes back to the form
   public registerOnChange(fn: any) {
     this.propagateChange = fn;
   }
 
-  // validates the form, returns null when valid else the validation object
   // in this case we're checking if the json parsing has passed or failed from the onChange method
   public validate(c: FormControl) {
     return (!this.parseError) ? null : {
@@ -48,7 +53,8 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
   }
 
   // not used, used for touch input
-  public registerOnTouched() { }
+  public registerOnTouched() {
+  }
 
   // change events from the textarea
   private onChange(event) {
@@ -68,7 +74,4 @@ export class InputFieldComponent implements ControlValueAccessor, Validator {
     // update the form
     this.propagateChange(this.data);
   }
-
-  // the method set in registerOnChange to emit changes back to the form
-  private propagateChange = (_: any) => { };
 }
